@@ -1,11 +1,16 @@
 <?php
 
-class Photo extends Model
+namespace App\Model;
+
+use App\Model\Trait\ClassName;
+
+class State extends Model
 {
+    use ClassName;
+
     protected $id;
     protected $name;
-    protected $path;
-    protected $className = self::class;
+    protected $code;
 
     function __construct($data = [])
     {

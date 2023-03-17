@@ -1,11 +1,16 @@
 <?php
 
+namespace App\Model;
+
+use App\Model\Trait\ClassName;
+
 class Contact extends Model
 {
+    use ClassName;
+    
     protected $id;
     protected $type;
     protected $data;
-    protected $className = self::class;
 
     function __construct($data = [])
     {

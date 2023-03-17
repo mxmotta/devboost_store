@@ -1,10 +1,15 @@
 <?php
 
+namespace App\Model;
+
+use App\Model\Trait\ClassName;
+
 class City extends Model
 {
+    use ClassName;
+    
     protected $id;
     protected $name;
-    protected $className = self::class;
 
     function __construct($data = [])
     {

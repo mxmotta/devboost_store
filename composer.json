@@ -1,0 +1,17 @@
+{
+    "name": "mxmotta/devboost_store",
+    "description": "Sistema de pedidos",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Marcelo Motta",
+            "email": "marcelo.motta@gmail.com"
+        }
+    ],
+    "require": {}
+}
