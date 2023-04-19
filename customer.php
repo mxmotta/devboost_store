@@ -3,25 +3,50 @@
 use App\Model\Customer;
 
 $customers = [
-    new Customer(['name' => "Marcelo", 'status' => true]),
-    new Customer(['name' => "Lucas", 'status' => false]),
-    new Customer(['name' => "Rafael", 'status' => false])
+    new Customer(['name' => "Marcelo", 'birthdate' => '0000-00-00', 'status' => true]),
+    new Customer(['name' => "Lucas", 'birthdate' => '0000-00-00', 'status' => false]),
+    new Customer(['name' => "Rafael", 'birthdate' => '0000-00-00', 'status' => false])
 ];
+?>
 
-echo "<table border=1>";
-echo "<tr>";
-echo "<th>Nome</th>";
-echo "<th>Data de nascimento</th>";
-echo "<th>Status</th>";
-echo "</tr>";
+<div class="card flex w-full">
 
-foreach($customers as $customer) {
-    echo "<tr>";
-    echo "<td>" . $customer->get()['name'] . "</td>";
-    echo "<td>" . $customer->get()['birthdate'] . "</td>";
-    echo "<td>" . ($customer->get()['status'] ? 'Ativo' : 'Inativo') . "</td>";
-    echo "</tr>";
-}
+    <div class="card-actions">
+        <div>
+            <input type="search" name="search" placeholder="Buscar">
+        </div>
+        <div>
+            <a href="#" class="btn btn-primary">Adicionar cliente</a>
+        </div>
+    </div>
 
-echo "</table>";
+    <div class="card-content">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-left">Nome</th>
+                    <th class="text-center">Data de nascimento</th>
+                    <th class="text-right">Status</th>
+                    <th class="text-right">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($customers as $customer) : ?>
+                    <tr>
+                        <td class="text-left"><?= $customer->get()['name'] ?></td>
+                        <td class="text-center"><?= $customer->get()['birthdate'] ?></td>
+                        <td class="text-right"><span class="badge <?= ($customer->get()['status'] ? 'badge-success' : 'badge-danger') ?>"><?= ($customer->get()['status'] ? 'Ativo' : 'Inativo') ?></span></td>
+                        <td class="text-right">
+                            <button class="btn btn-danger">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 
+
+
+</div>
