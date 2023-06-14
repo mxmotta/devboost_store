@@ -8,8 +8,10 @@ class Order extends Model
 {
     use ClassName;
     
-    protected $id;
-    protected $status;
+    protected int $id;
+    protected Customer $customer;
+    protected array $products;
+    protected bool $status;
 
     function __construct($data = [])
     {

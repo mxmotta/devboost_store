@@ -15,7 +15,7 @@ class Customer extends Model
     protected $cpf;
     protected $status;
 
-    protected $hiden = ['id'];
+    protected $hiden = [];
 
     function __construct($data = [])
     {

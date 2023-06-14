@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
 
     <script src="https://kit.fontawesome.com/cbdbd58c22.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -25,7 +26,7 @@
             <nav>
                 <ul id="main-menu">
                     <li><a href="/devboost_store"><i class="fa-solid fa-house"></i>Home</a></li>
-                    <li><a href="/devboost_store/?page=orders"><i class="fa-solid fa-pen-to-square"></i>Pedidos</a></li>
+                    <li><a href="/devboost_store/?page=order"><i class="fa-solid fa-pen-to-square"></i>Pedidos</a></li>
                     <li><a href="/devboost_store/?page=customer"><i class="fa-solid fa-user-group"></i>Clientes</a></li>
                     <li><a href="/devboost_store/?page=product"><i class="fa-solid fa-boxes-stacked"></i>Produtos</a></li>
                 </ul>
@@ -47,11 +48,23 @@
                         case 'customer':
                             require 'customer.php';
                             break;
+                        case 'customer_add':
+                            require 'customer_add.php';
+                            break;
                         case 'product':
                             require 'product.php';
                             break;
+                        case 'product_add':
+                            require 'product_add.php';
+                            break;
                         case 'contact':
                             require 'contact.php';
+                            break;
+                        case 'order':
+                            require 'order.php';
+                            break;
+                        case 'order_add':
+                            require 'order_add.php';
                             break;
 
                         default:
@@ -63,6 +76,8 @@
             </div>
         </div>
     </div>
+
+    <script src="assets/js/script-jquery.js"></script>
 </body>
 
 </html>

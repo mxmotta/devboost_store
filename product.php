@@ -17,6 +17,15 @@ $products = [
     ]),
 ];
 
+
+
+if(isset($_POST['product'])) {
+    array_push($products, new Product([
+        'name'          => $_POST['product']['name'],
+        'description'   => $_POST['product']['description'],
+    ]));
+}
+
 ?>
 
 <div class="card flex w-full">
@@ -26,7 +35,7 @@ $products = [
             <input type="search" name="search" placeholder="Buscar">
         </div>
         <div>
-            <a href="#" class="btn btn-primary">Adicionar produto</a>
+            <a href="/devboost_store/?page=product_add" class="btn btn-primary">Adicionar produto</a>
         </div>
     </div>
 
