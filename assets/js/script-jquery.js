@@ -1,8 +1,8 @@
 "use strict";
 
-const IBGE_URL = "https://servicodados.ibge.gov.br/api/v1"
+const IBGE_URL = "http://localhost/devboost_store/api.php?page="
 
-const ibgeApi = async (url, order = 'id', method = 'GET') => {
+const api = async (url, order = 'id', method = 'GET') => {
     return await $.ajax({
         url: `${IBGE_URL}${url}`,
         method: method,
@@ -18,12 +18,13 @@ const getStates = async () => {
 
     $('#loading_states').css('display', 'inline-block')
 
-    await ibgeApi(`/localidades/estados`, 'nome')
+    await api(`states`, 'nome')
         .then((states) => {
+            console.table(states)
             states.forEach((state) => {
                 $('<option>')
                     .val(state.id)
-                    .text(state.nome)
+                    .text(state.name)
                     .appendTo('#state')
             })
         })
@@ -48,7 +49,7 @@ const getCity = async (state) => {
         .text('Selecione uma cidade')
         .appendTo('#city')
 
-    await ibgeApi(`/localidades/estados/${state}/municipios`)
+    await api(`/localidades/estados/${state}/municipios`)
         .then((cities) => {
             cities.forEach((city) => {
                 $('<option>')

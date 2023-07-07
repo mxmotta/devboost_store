@@ -2,11 +2,18 @@
 
 namespace App\Model;
 
+use App\Config\Database;
+use ReflectionClass;
+
 class Model
 {
 
     protected $hiden = [];
+
+    protected $table = "";
+
     private $model_hiden = [
+        'table',
         'className',
         'hiden',
         'model_hiden'
@@ -20,6 +27,11 @@ class Model
         ];
     }
 
+    private function getTable()
+    {
+        return $this->table;
+    }
+
     /**
      * Faz o get dos atributos da classe
      * @return array
@@ -27,16 +39,30 @@ class Model
     public function get()
     {
         $this->hideAtributes();
-
         $attributes = get_class_vars($this->className);
-        foreach ($attributes as $key => $attribute) {
-            $attributes[$key] = $this->{$key};
-        }
 
-        foreach ($this->model_hiden as $hiden) {
-            unset($attributes[$hiden]);
+        $connection = Database::connect();
+
+        $sql = "SELECT * FROM `$this->table`";
+        $result = mysqli_query($connection, $sql);
+
+        $data = [];
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            foreach (array_keys($row) as $column) {
+                $attributes[$column] = $row[$column];
+            }
+            foreach ($this->model_hiden as $hiden) {
+                unset($attributes[$hiden]);
+            }
+            $reflect = new ReflectionClass($this->className);
+            $class = $reflect->newInstance($attributes);
+            array_push($data, $class);
         }
-        return $attributes;
+        
+        Database::close($connection);
+
+        return $data;
     }
 
     /**
@@ -49,6 +75,21 @@ class Model
         foreach ($data as $key => $value) {
             $this->{$key} = $value;
         }
-        return $this->get();
+        // return $this->get();
+    }
+
+    public function toArray() {
+        
+        $this->hideAtributes();
+        $attributes = get_class_vars($this->className);
+
+        foreach ($this->model_hiden as $hiden) {
+            unset($attributes[$hiden]);
+        }
+        foreach ($attributes as $key => $attribute) {
+            $attributes[$key] = $this->{$key};
+        }
+
+        return $attributes;
     }
 }
