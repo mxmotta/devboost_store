@@ -2,26 +2,10 @@
 
 use App\Model\Customer;
 
-$customers = [
-    new Customer(['name' => "Marcelo", 'birthdate' => '0000-00-00', 'status' => true]),
-    new Customer(['name' => "Lucas", 'birthdate' => '0000-00-00', 'status' => false]),
-    new Customer(['name' => "Rafael", 'birthdate' => '0000-00-00', 'status' => false])
-];
-
-if (isset($_POST['customer'])) {
-    array_push($customers, new Customer([
-        'name'      => $_POST['customer']['name'],
-        'birthdate' => $_POST['customer']['birthdate'],
-        'status'    => true,
-    ]));
-}
-
-if(isset($_POST['delete'])) {
-    unset($customers[$_POST['delete']['customer']]);
-}
+$customer = new Customer();
+$customers = $customer->get();
 
 ?>
-
 <div class="card flex w-full">
 
     <div class="card-actions">
@@ -44,14 +28,14 @@ if(isset($_POST['delete'])) {
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($customers as $key => $customer) : ?>
+                <?php foreach ($customers as $customer) : ?>
                     <tr>
-                        <td class="text-left"><?= $customer->get()['name'] ?></td>
-                        <td class="text-center"><?= $customer->get()['birthdate'] ?></td>
-                        <td class="text-right"><span class="badge <?= ($customer->get()['status'] ? 'badge-success' : 'badge-danger') ?>"><?= ($customer->get()['status'] ? 'Ativo' : 'Inativo') ?></span></td>
+                        <td class="text-left"><?= $customer->name ?></td>
+                        <td class="text-center"><?= $customer->birthdate ?></td>
+                        <td class="text-right"><span class="badge <?= ($customer->status ? 'badge-success' : 'badge-danger') ?>"><?= ($customer->status ? 'Ativo' : 'Inativo') ?></span></td>
                         <td class="text-right">
                             <form action="/devboost_store/?page=customer" method="post">
-                                <input type="hidden" name="delete[customer]" value="<?= $key ?>">
+                                <input type="hidden" name="delete[customer]" value="<?= $customer->id ?>">
                                 <button type="submit" class="btn btn-danger">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>

@@ -9,11 +9,13 @@ class Customer extends Model
 
     use ClassName;
 
-    protected $id;
-    protected $name;
-    protected $birthdate;
-    protected $cpf;
-    protected $status;
+    public $id;
+    public $name;
+    public $birthdate;
+    public $cpf;
+    public $status;
+
+    protected $table = "customers";
 
     protected $hiden = [];
 

@@ -2,13 +2,11 @@
 
 const IBGE_URL = "http://localhost/devboost_store/api.php?page="
 
-const api = async (url, order = 'id', method = 'GET') => {
+const api = async (url, params = {}, method = 'GET') => {
     return await $.ajax({
         url: `${IBGE_URL}${url}`,
         method: method,
-        data: {
-            orderBy: order
-        },
+        data: params,
         success: (data) => data,
         error: () => console.log('Erro ao conectar na api')
     })
@@ -18,9 +16,10 @@ const getStates = async () => {
 
     $('#loading_states').css('display', 'inline-block')
 
-    await api(`states`, 'nome')
+    await api(`states`, {
+        orderBy: 'name,asc'
+    })
         .then((states) => {
-            console.table(states)
             states.forEach((state) => {
                 $('<option>')
                     .val(state.id)
@@ -49,12 +48,15 @@ const getCity = async (state) => {
         .text('Selecione uma cidade')
         .appendTo('#city')
 
-    await api(`/localidades/estados/${state}/municipios`)
+    await api(`cities`, {
+        orderBy: 'name,asc',
+        state_id: state
+    })
         .then((cities) => {
             cities.forEach((city) => {
                 $('<option>')
                     .val(city.id)
-                    .text(city.nome)
+                    .text(city.name)
                     .appendTo('#city')
             })
         })

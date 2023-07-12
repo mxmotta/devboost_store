@@ -3,7 +3,14 @@
 use App\Model\State;
 
 $state = new State();
-$states = $state->get();
+
+$order = isset($_GET['orderBy']) ? $_GET['orderBy'] : null;
+
+$options = [
+    'order' => $order
+];
+
+$states = $state->get($options);
 
 $data = [];
 
@@ -13,5 +20,5 @@ foreach($states as $state) {
 
 header('Content-Type: application/json');
 
-echo json_encode($data, JSON_PRETTY_PRINT);
+echo json_encode($data);
 

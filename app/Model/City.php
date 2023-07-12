@@ -15,7 +15,7 @@ class City extends Model
 
     function __construct($data = [])
     {
-        // $this->set($data);
+        $this->set($data);
     }
 
 }
