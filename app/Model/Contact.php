@@ -8,9 +8,12 @@ class Contact extends Model
 {
     use ClassName;
     
-    protected $id;
-    protected $type;
-    protected $data;
+    public $id;
+    public $type;
+    public $value;
+    public $customer_id;
+    
+    protected $table = "contacts";
 
     function __construct($data = [])
     {

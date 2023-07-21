@@ -10,8 +10,8 @@ class City extends Model
 
     protected $table = "cities";
     
-    protected $id;
-    protected $name;
+    public $id;
+    public $name;
 
     function __construct($data = [])
     {

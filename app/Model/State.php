@@ -10,9 +10,9 @@ class State extends Model
     
     protected $table = "states";
 
-    protected $id;
-    protected $name;
-    protected $code;
+    public $id;
+    public $name;
+    public $code;
 
     function __construct($data = [])
     {

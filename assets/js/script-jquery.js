@@ -15,16 +15,21 @@ const api = async (url, params = {}, method = 'GET') => {
 const getStates = async () => {
 
     $('#loading_states').css('display', 'inline-block')
+    // $('#state').data('selected')
 
     await api(`states`, {
         orderBy: 'name,asc'
     })
         .then((states) => {
             states.forEach((state) => {
-                $('<option>')
+                let option = $('<option>')
                     .val(state.id)
                     .text(state.name)
                     .appendTo('#state')
+
+                if ($('#state').data('selected') == state.id) {
+                    option.attr('selected', true)
+                }
             })
         })
         .catch(() => console.log('Erro ao executar função'))
@@ -54,10 +59,14 @@ const getCity = async (state) => {
     })
         .then((cities) => {
             cities.forEach((city) => {
-                $('<option>')
+                let option = $('<option>')
                     .val(city.id)
                     .text(city.name)
                     .appendTo('#city')
+
+                if ($('#city').data('selected') == city.id) {
+                    option.attr('selected', true)
+                }
             })
         })
         .catch(() => console.log('Erro ao executar função'))
@@ -68,3 +77,7 @@ const getCity = async (state) => {
 }
 
 getStates()
+
+if($('#state').data('selected')){
+    getCity($('#state').data('selected'))
+}

@@ -12,7 +12,7 @@ $city = new City();
 
 $options = [
     'order' => 'name,asc',
-    'where' => 'state_id,=,' . $_GET['state_id']
+    'where' => ['state_id,=,' . $_GET['state_id']]
 ];
 
 $cities = $city->get($options);

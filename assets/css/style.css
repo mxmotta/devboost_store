@@ -134,6 +134,9 @@ form > div {
 .justify-between {
     justify-content: space-between;    
 }
+.justify-end {
+    justify-content: end;
+}
 .gap-1{
     gap: 10px;
 }
@@ -164,6 +167,9 @@ form > div {
     font-size: 16px;
     cursor: pointer;
     text-decoration: none;
+}
+a.btn {
+    padding: 5px 20px;
 }
 
 .btn-primary {

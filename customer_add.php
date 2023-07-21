@@ -23,17 +23,17 @@
                 <div class="flex flex-column flex-nowrap w-full">
                     <label for="email">Email</label>
                     <input type="hidden" name="customer[contacts][0][type]" value="email">
-                    <input type="email" id="email" name="customer[contacts][0][data]" placeholder="Email" class="">
+                    <input type="email" id="email" name="customer[contacts][0][value]" placeholder="Email" class="">
                 </div>
                 <div class="flex flex-column flex-nowrap w-full">
                     <label for="phone">Telefone</label>
                     <input type="hidden" name="customer[contacts][1][type]" value="phone">
-                    <input type="text" id="phone" name="customer[contacts][1][data]" placeholder="Telefone" class="">
+                    <input type="text" id="phone" name="customer[contacts][1][value]" placeholder="Telefone" class="">
                 </div>
                 <div class="flex flex-column flex-nowrap w-full">
                     <label for="city">Celular</label>
                     <input type="hidden" name="customer[contacts][2][type]" value="mobile">
-                    <input type="text" id="mobile" name="customer[contacts][2][data]" placeholder="Celular" class="">
+                    <input type="text" id="mobile" name="customer[contacts][2][value]" placeholder="Celular" class="">
                 </div>
             </div>
 
@@ -43,14 +43,35 @@
                     <input type="text" id="street" name="customer[address][street]" placeholder="Rua" class="">
                 </div>
                 <div class="flex flex-column flex-nowrap w-full">
-                    <label for="state">Estado <div id="loading_states" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></label>
+                    <label for="district">Bairro</label>
+                    <input type="text" id="district" name="customer[address][district]" placeholder="Bairro" class="">
+                </div>
+                <div class="flex flex-column flex-nowrap w-full">
+                    <label for="number">Número</label>
+                    <input type="text" id="number" name="customer[address][number]" placeholder="Número" class="">
+                </div>
+            </div>
+
+            <div class="flex flex-row justify-between gap-1">
+                <div class="flex flex-column flex-nowrap w-full">
+                    <label for="state">Estado <div id="loading_states" class="lds-ellipsis">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div></label>
                     <select id="state" name="customer[address][state]" class="">
                         <option value="">Selecione o estado</option>
                     </select>
                 </div>
                 <div class="flex flex-column flex-nowrap w-full">
-                    <label for="city">Cidade <div id="loading_cities" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></label>
-                    <select id="city" name="customer[address][city]" class="">
+                    <label for="city">Cidade <div id="loading_cities" class="lds-ellipsis">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div></label>
+                    <select id="city" name="customer[address][city_id]" class="">
                         <option value="">Selecione uma cidade</option>
                     </select>
                 </div>
@@ -66,12 +87,32 @@
 
 <?php
 
+use App\Model\Address;
+use App\Model\Contact;
 use App\Model\Customer;
 
     if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['customer'])) {
 
         $customer  = new Customer($_POST['customer']);
         $customer = $customer->create();
+
+        if (isset($_POST['customer']['contacts'])) {
+            $contacts = $_POST['customer']['contacts'];
+    
+            foreach ($contacts as $contact) {
+                $contact['customer_id'] = $customer->id;
+                $contact = new Contact($contact);
+                $contact->create();
+            }
+        }
+    
+        if (isset($_POST['customer']['address'])) {
+            $address = $_POST['customer']['address'];
+    
+            $address['customer_id'] = $customer->id;
+            $address = new Address($address);
+            $address->create();
+        }
 
         echo "<script>window.location.href='/devboost_store/?page=customer'</script>";
     }

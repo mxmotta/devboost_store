@@ -51,6 +51,9 @@
                         case 'customer_add':
                             require 'customer_add.php';
                             break;
+                        case 'customer_edit':
+                            require 'customer_edit.php';
+                            break;
                         case 'product':
                             require 'product.php';
                             break;
