@@ -86,7 +86,7 @@ if(isset($_POST['order'])) {
             <input type="search" name="search" placeholder="Buscar">
         </div>
         <div>
-            <a href="/devboost_store/?page=order_add" class="btn btn-primary">Adicionar pedido</a>
+            <a href="/?page=order_add" class="btn btn-primary">Adicionar pedido</a>
         </div>
     </div>
 

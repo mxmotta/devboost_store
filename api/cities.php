@@ -2,7 +2,7 @@
 
 use App\Model\City;
 
-header('Content-Type: application/json');
+// header('Content-Type: application/json');
 
 if(!isset($_GET['state_id'])) {
     return [];

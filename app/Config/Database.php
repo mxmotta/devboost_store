@@ -6,7 +6,7 @@ class Database
 {
 
     private static $credentials = [
-        'hostname' => '127.0.0.1',
+        'hostname' => 'db',
         'username' => 'marcelo',
         'password' => '123',
         'database' => 'devboost_store',

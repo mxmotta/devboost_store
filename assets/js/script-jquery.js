@@ -1,6 +1,6 @@
 "use strict";
 
-const IBGE_URL = "http://localhost/devboost_store/api.php?page="
+const IBGE_URL = "http://devboost_store.local/api.php?page="
 
 const api = async (url, params = {}, method = 'GET') => {
     return await $.ajax({
@@ -20,6 +20,7 @@ const getStates = async () => {
     await api(`states`, {
         orderBy: 'name,asc'
     })
+        .then((data) => JSON.parse(data))
         .then((states) => {
             states.forEach((state) => {
                 let option = $('<option>')
@@ -57,6 +58,7 @@ const getCity = async (state) => {
         orderBy: 'name,asc',
         state_id: state
     })
+        .then((data) => JSON.parse(data))
         .then((cities) => {
             cities.forEach((city) => {
                 let option = $('<option>')
@@ -78,6 +80,6 @@ const getCity = async (state) => {
 
 getStates()
 
-if($('#state').data('selected')){
+if ($('#state').data('selected')) {
     getCity($('#state').data('selected'))
 }

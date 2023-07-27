@@ -35,7 +35,7 @@ if(isset($_POST['product'])) {
             <input type="search" name="search" placeholder="Buscar">
         </div>
         <div>
-            <a href="/devboost_store/?page=product_add" class="btn btn-primary">Adicionar produto</a>
+            <a href="/?page=product_add" class="btn btn-primary">Adicionar produto</a>
         </div>
     </div>
 

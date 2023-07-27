@@ -37,7 +37,7 @@ $products = [
 
     <div class="card-content">
 
-        <form action="/devboost_store/?page=order" method="post">
+        <form action="/?page=order" method="post">
             <div class="flex flex-column flex-nowrap w-full">
                 <label for="customer">Cliente</label>
                 <select id="customer" name="order[customer_id]" class="">

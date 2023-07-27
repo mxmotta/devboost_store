@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['customer'])) {
         ]);
     }
 
-    echo "<script>window.location.href='/devboost_store/?page=customer'</script>";
+    echo "<script>window.location.href='/?page=customer'</script>";
 } else {
 
     $customer = new Customer();
@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['customer'])) {
         <h2>Editar cliente</h2>
     </div>
     <div class="card-content">
-        <form action="/devboost_store/?page=customer_edit" method="post">
+        <form action="/?page=customer_edit" method="post">
 
             <input type="hidden" name="customer[id]" value="<?= $customer->id ?>">
             <div class="flex flex-row justify-between gap-1">

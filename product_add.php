@@ -6,7 +6,7 @@
 
     <div class="card-content">
 
-        <form action="/devboost_store/?page=product" method="post">
+        <form action="/?page=product" method="post">
             <div class="flex flex-column flex-nowrap w-full">
                 <label for="photo">Foto do produto</label>
                 <input type="file" id="photo" name="product[photo]" placeholder="Foto do produto" class="">

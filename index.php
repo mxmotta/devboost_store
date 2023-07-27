@@ -25,10 +25,10 @@
             </div>
             <nav>
                 <ul id="main-menu">
-                    <li><a href="/devboost_store"><i class="fa-solid fa-house"></i>Home</a></li>
-                    <li><a href="/devboost_store/?page=order"><i class="fa-solid fa-pen-to-square"></i>Pedidos</a></li>
-                    <li><a href="/devboost_store/?page=customer"><i class="fa-solid fa-user-group"></i>Clientes</a></li>
-                    <li><a href="/devboost_store/?page=product"><i class="fa-solid fa-boxes-stacked"></i>Produtos</a></li>
+                    <li><a href="/"><i class="fa-solid fa-house"></i>Home</a></li>
+                    <li><a href="/?page=order"><i class="fa-solid fa-pen-to-square"></i>Pedidos</a></li>
+                    <li><a href="/?page=customer"><i class="fa-solid fa-user-group"></i>Clientes</a></li>
+                    <li><a href="/?page=product"><i class="fa-solid fa-boxes-stacked"></i>Produtos</a></li>
                 </ul>
             </nav>
         </div>

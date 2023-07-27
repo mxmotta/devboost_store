@@ -18,7 +18,5 @@ foreach($states as $state) {
     array_push($data, $state->toArray());
 }
 
-header('Content-Type: application/json');
-
 echo json_encode($data);
 

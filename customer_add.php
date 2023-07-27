@@ -3,7 +3,7 @@
         <h2>Adicionar cliente</h2>
     </div>
     <div class="card-content">
-        <form action="/devboost_store/?page=customer_add" method="post">
+        <form action="/?page=customer_add" method="post">
             <div class="flex flex-row justify-between gap-1">
                 <div class="flex flex-column flex-nowrap w-full">
                     <label for="name">Nome</label>
@@ -114,6 +114,6 @@ use App\Model\Customer;
             $address->create();
         }
 
-        echo "<script>window.location.href='/devboost_store/?page=customer'</script>";
+        echo "<script>window.location.href='/?page=customer'</script>";
     }
 ?>
