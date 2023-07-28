@@ -13,5 +13,7 @@
             "email": "marcelo.motta@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "nesbot/carbon": "^2.68"
+    }
 }

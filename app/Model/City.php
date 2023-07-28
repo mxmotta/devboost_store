@@ -12,6 +12,7 @@ class City extends Model
     
     public $id;
     public $name;
+    public $state_id;
 
     function __construct($data = [])
     {

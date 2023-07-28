@@ -49,10 +49,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['customer'])) {
         $contacts = $contact->get([
             'where' => ['customer_id,=,' . $id]
         ]);
-        $address = $address->get([
+
+        $addresses = $address->get([
             'where' => ['customer_id,=,' . $id]
         ]);
-        $city = $city->find($address[0]->city_id);
+
+        $address = count($addresses) ? $addresses[0] : $address;
+        $city = count($addresses) ? $city->find($address->city_id) : $city;
 
         $customer_contacts['email'] = [
             'id' => null,
@@ -120,20 +123,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['customer'])) {
                     <input type="text" id="mobile" name="customer[contacts][2][value]" value="<?= $customer_contacts['mobile']['value'] ?>" placeholder="Celular" class="">
                 </div>
             </div>
-            <input type="hidden" name="customer[address][id]" value="<?= $address[0]->id ?>">
+            <input type="hidden" name="customer[address][id]" value="<?= $address->id ?>">
 
             <div class="flex flex-row justify-between gap-1">
                 <div class="flex flex-column flex-nowrap w-full">
                     <label for="street">Rua</label>
-                    <input type="text" id="street" name="customer[address][street]" value="<?= $address[0]->street ?? "" ?>" placeholder="Rua" class="">
+                    <input type="text" id="street" name="customer[address][street]" value="<?= $address->street ?? "" ?>" placeholder="Rua" class="" required>
                 </div>
                 <div class="flex flex-column flex-nowrap w-full">
                     <label for="district">Bairro</label>
-                    <input type="text" id="district" name="customer[address][district]" value="<?= $address[0]->district ?? "" ?>" placeholder="Bairro" class="">
+                    <input type="text" id="district" name="customer[address][district]" value="<?= $address->district ?? "" ?>" placeholder="Bairro" class="" required>
                 </div>
                 <div class="flex flex-column flex-nowrap w-full">
                     <label for="number">Número</label>
-                    <input type="text" id="number" name="customer[address][number]" value="<?= $address[0]->number ?? "" ?>" placeholder="Número" class="">
+                    <input type="text" id="number" name="customer[address][number]" value="<?= $address->number ?? "" ?>" placeholder="Número" class="" required>
                 </div>
             </div>
 
@@ -145,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['customer'])) {
                             <div></div>
                             <div></div>
                         </div></label>
-                    <select id="state" name="customer[address][state]" data-selected="<?= $city->state_id ?>" class="">
+                    <select id="state" name="customer[address][state]" data-selected="<?= $city->state_id ?>" class="" required>
                         <option value="">Selecione o estado</option>
                     </select>
                 </div>
@@ -156,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['customer'])) {
                             <div></div>
                             <div></div>
                         </div></label>
-                    <select id="city" name="customer[address][city_id]" data-selected="<?= $address[0]->city_id ?? "" ?>" class="">
+                    <select id="city" name="customer[address][city_id]" data-selected="<?= $address->city_id ?? "" ?>" class="" required>
                         <option value="">Selecione uma cidade</option>
                     </select>
                 </div>
