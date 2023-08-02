@@ -6,7 +6,7 @@
 
     <div class="card-content">
 
-        <form action="/?page=product" method="post">
+        <form action="/?page=product_add" method="post">
             <div class="flex flex-column flex-nowrap w-full">
                 <label for="photo">Foto do produto</label>
                 <input type="file" id="photo" name="product[photo]" placeholder="Foto do produto" class="">
@@ -14,6 +14,10 @@
             <div class="flex flex-column flex-nowrap w-full">
                 <label for="name">Nome</label>
                 <input type="text" id="name" name="product[name]" placeholder="Nome do produto" class="">
+            </div>
+            <div class="flex flex-column flex-nowrap w-full">
+                <label for="price">Preço</label>
+                <input type="text" id="price" name="product[price]" placeholder="Preço do produto" class="money">
             </div>
             <div class="flex flex-column flex-nowrap w-full">
                 <label for="description">Descrição</label>
@@ -28,6 +32,18 @@
 
     </div>
 
-
-
 </div>
+
+<?php
+
+use App\Model\Product;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product'])) {
+
+    $product  = new Product($_POST['product']);
+
+    $product = $product->create();
+
+    echo "<script>window.location.href='/?page=product'</script>";
+}
+?>

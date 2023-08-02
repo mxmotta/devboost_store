@@ -83,3 +83,13 @@ getStates()
 if ($('#state').data('selected')) {
     getCity($('#state').data('selected'))
 }
+
+$(function () {
+    $('.money').maskMoney({
+        prefix: 'R$ ',
+        thousands: '.',
+        decimal: ',',
+        allowZero: true
+    })
+    $('.money').trigger('focus')
+})
