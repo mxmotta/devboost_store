@@ -3,11 +3,13 @@
 namespace App\Model;
 
 use App\Config\Database;
+use Exception;
 use ReflectionClass;
 
 class Model
 {
 
+    // @TODO - Verificar melhor forma de recuperar o nome da classe
     protected $hiden = [];
 
     protected $table = "";
@@ -51,9 +53,9 @@ class Model
 
         if (isset($options['where']) && count($options['where']) > 0) {
             $sql .= " WHERE ";
-            foreach($options['where'] as $key => $where){
+            foreach ($options['where'] as $key => $where) {
                 $where = explode(',', $where);
-                if($key > 0) {
+                if ($key > 0) {
                     $sql .= " AND ";
                 }
                 $sql .= "$where[0] $where[1] '$where[2]'";
@@ -176,11 +178,11 @@ class Model
         Database::close($connection);
     }
 
-    public function updateOrCreate($data = []){
-
+    public function updateOrCreate($data = [])
+    {
         $where = [];
-        if(is_array($data)){
-            foreach($data as $field => $value) {
+        if (is_array($data)) {
+            foreach ($data as $field => $value) {
                 array_push($where, $field . ',=,' . $value);
             }
         }
@@ -189,7 +191,7 @@ class Model
 
         $found = $class->get(['where' => $where]);
 
-        if(count($found) == 0) {
+        if (count($found) == 0) {
             $this->create();
         } else {
             $this->update();
@@ -198,17 +200,27 @@ class Model
 
     public function delete()
     {
-        $connection = Database::connect();
+        try {
 
-        $sql = "DELETE FROM `$this->table` WHERE `id`= $this->id;";
+            if (!$this->id) {
+                throw new Exception('ID não localizado');
+            }
 
-        $result = mysqli_query($connection, $sql);
+            $connection = Database::connect();
 
-        if ($result) {
-            return true;
+            $sql = "DELETE FROM `$this->table` WHERE `id`= $this->id;";
+
+            $result = mysqli_query($connection, $sql);
+
+            if ($result) {
+                return true;
+            }
+
+            Database::close($connection);
+        } catch (\Exception $exception) {
+            echo $exception->getMessage();
+            return $exception->getMessage();
         }
-
-        Database::close($connection);
     }
 
 

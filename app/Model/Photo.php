@@ -8,9 +8,12 @@ class Photo extends Model
 {
     use ClassName;
     
-    protected $id;
-    protected $name;
-    protected $path;
+    public $id;
+    public $name;
+    public $path;
+    public $product_id;
+
+    protected $table = "photos";
 
     function __construct($data = [])
     {

@@ -1,7 +1,6 @@
 <?php
 
 use App\Model\Product;
-use Carbon\Carbon;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product'])) {
 
@@ -10,23 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product'])) {
     $product = $product->update();
 
     if (isset($_FILES['photo'])) {
-        $target_dir = "uploads/product/" . $product->id . "/";
-        $file_ = explode('.', $_FILES['photo']["name"]);
-        $extension = end($file_);        
-        $target_file = $target_dir . Carbon::now()->format('YmdHis') . '.' . $extension;
-
-        // Garantindo a existencia do diretorio
-        if (!file_exists($target_dir)) {
-            mkdir($target_dir, 0777, true);
-        }
-
-        // Deletar arquivos existentes
-        $files = array_diff(scandir($target_dir), array('.', '..'));
-        foreach ($files as $file) {
-            unlink($target_dir . $file);
-        }
-
-        move_uploaded_file($_FILES['photo']["tmp_name"], $target_file);
+        $product->createPhoto($_FILES['photo']);
     }
 
     echo "<script>window.location.href='/?page=product'</script>";
@@ -50,6 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product'])) {
     </div>
 
     <div class="card-content">
+
+        <img src="<?= $product->getPhoto()?->path ?>" alt="" width="150">
 
         <form action="/?page=product_edit" method="post" enctype="multipart/form-data">
             <input type="hidden" name="product[id]" value="<?= $product->id ?>">

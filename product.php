@@ -9,22 +9,12 @@ if (isset($_GET['name'])) {
     ]);
 } else {
     $products = $product->get();
-
-    // foreach($products as $product){
-    //     $target_dir = "uploads/product/" . $product->id . "/";
-    //     $files = array_diff(scandir($target_dir), array('.', '..'));
-        
-    //     if(count($files) > 0){
-    //         var_dump(end($files));
-    //         // $product->photo = end($files);
-    //     }
-    
-    // }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
 
     $product = $product->find($_POST['delete']['product']);
+    $product->deletePhoto();
     $product->delete();
 
     echo "<script>window.location.href='/?page=product'</script>";
@@ -56,9 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
             </thead>
             <tbody>
                 <?php foreach ($products as $product) : ?>
+
                     <tr>
                         <td class="text-left">
-                            <img src="/uploads/product/<?= $product->id ?>/20230802011537.jpg" alt="" width="70">
+                            <img src="<?= $product->photo?->path ?>" alt="" width="70">
                         </td>
                         <td class="text-left"><?= $product->name ?></td>
                         <td class="text-left"><?= $product->description ?></td>
