@@ -1,82 +1,24 @@
 <?php
 
-use App\Model\Customer;
 use App\Model\Order;
-use App\Model\Product;
+use Carbon\Carbon;
 
-$customers = [
-    new Customer(['id' => 1, 'name' => "Marcelo", 'birthdate' => '0000-00-00', 'status' => true]),
-    new Customer(['id' => 2, 'name' => "Lucas", 'birthdate' => '0000-00-00', 'status' => false]),
-    new Customer(['id' => 3, 'name' => "Rafael", 'birthdate' => '0000-00-00', 'status' => false])
-];
-
-$products = [
-    new Product([
-        'id'          => 1,
-        'name'        => "Xiomi Redmi Note 11",
-        'description' => "Smartphone tela amoled, 128gb armazenamento, 6gb",
-    ]),
-    new Product([
-        'id'          => 2,
-        'name'        => "Poco X5 pro",
-        'description' => "Smartphone tela amoled, 128gb armazenamento, 6gb",
-    ]),
-    new Product([
-        'id'          => 3,
-        'name'        => "iPhone 14",
-        'description' => "Smartphone tela amoled, 128gb armazenamento, 6gb",
-    ]),
-];
-
-$orders = [
-    new Order([
-        'id' => 1,
-        'customer' => new Customer(['name' => "Marcelo", 'birthdate' => '0000-00-00', 'status' => true]),
-        'products' => [
-            new Product([
-                'name'        => "Xiomi Redmi Note 11",
-                'description' => "Smartphone tela amoled, 128gb armazenamento, 6gb",
-            ]),
-            new Product([
-                'name'        => "Poco X5 pro",
-                'description' => "Smartphone tela amoled, 128gb armazenamento, 6gb",
-            ]),
-        ],
-        'status' => true
-    ]),
-    new Order([
-        'id' => 2,
-        'customer' => new Customer(['name' => "Lucas", 'birthdate' => '0000-00-00', 'status' => false]),
-        'products' => [
-            new Product([
-                'name'        => "Poco X5 pro",
-                'description' => "Smartphone tela amoled, 128gb armazenamento, 6gb",
-            ]),
-        ],
-        'status' => true
-    ]),
-    new Order([
-        'id' => 3,
-        'customer' => new Customer(['name' => "Rafael", 'birthdate' => '0000-00-00', 'status' => false]),
-        'products' => [
-            new Product([
-                'name'        => "Xiomi Redmi Note 11",
-                'description' => "Smartphone tela amoled, 128gb armazenamento, 6gb",
-            ]),
-        ],
-        'status' => false
-    ]),
-];
-
-if(isset($_POST['order'])) {
-    
-    // array_push($products, new Product([
-    //     'name'          => $_POST['product']['name'],
-    //     'description'   => $_POST['product']['description'],
-    // ]));
+$order = new Order();
+if (isset($_GET['name'])) {
+    $orders = $order->get([
+        'where' => ['name,like,%' . $_GET['name'] . '%']
+    ]);
+} else {
+    $orders = $order->get();
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
 
+    $order = $order->find($_POST['delete']['order']);
+    $order->delete();
+
+    echo "<script>window.location.href='/?page=order'</script>";
+}
 ?>
 
 <div class="card flex w-full">
@@ -95,8 +37,9 @@ if(isset($_POST['order'])) {
             <thead>
                 <tr>
                     <th class="text-left">ID</th>
+                    <th class="text-left">Data</th>
                     <th class="text-left">Cliente</th>
-                    <th class="text-left">Produtos</th>
+                    <!-- <th class="text-left">Produtos</th> -->
                     <th class="text-right">Status</th>
                     <th class="text-right">Ações</th>
                 </tr>
@@ -104,22 +47,22 @@ if(isset($_POST['order'])) {
             <tbody>
                 <?php foreach ($orders as $order) : ?>
                     <tr>
-                        <td class="text-left"><?= $order->get()['id'] ?></td>
-                        <td class="text-left"><?= $order->get()['customer']->get()['name'] ?></td>
-                        <td class="text-left">
-                            <?php foreach($order->get()['products'] as $product){
-                                echo $product->get()['name'] . '<br />';
-                            } ?>
-                        </td>
+                        <td class="text-left"><?= $order->id ?></td>
+                        <td class="text-left"><?= $order->date ? Carbon::parse($order->date)->format('d/m/Y') : '' ?></td>
+                        <td class="text-left"><?= $order->customer->name ?></td>
+                        <td class="text-right"><span class="badge <?= ($order->status ? 'badge-success' : 'badge-danger') ?>"><?= ($order->status ? 'Ativo' : 'Inativo') ?></span></td>
                         <td class="text-right">
-                            <span class="badge <?= ($order->get()['status'] ? 'badge-success' : 'badge-danger') ?>">
-                                <?= ($order->get()['status'] ? 'Aprovado' : 'Cancelado') ?>
-                            </span>
-                        </td>
-                        <td class="text-right">
-                            <button class="btn btn-danger">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
+                            <div class="flex justify-end gap-1">
+                                <a href="/?page=order_edit&id=<?= $order->id ?>" class="btn btn-primary">
+                                    <i class="fa-solid fa-edit"></i>
+                                </a>
+                                <form class="delete-form" action="/?page=order" method="post">
+                                    <input type="hidden" name="delete[order]" value="<?= $order->id ?>">
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -128,3 +71,28 @@ if(isset($_POST['order'])) {
     </div>
 
 </div>
+
+<script>
+    let formDelete = document.getElementsByClassName('delete-form');
+
+    Array.from(formDelete).forEach(form => {
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            Swal.fire({
+                title: 'Você está certo disso?',
+                text: "Tem certeza que quer deletar esse pedido?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, manda ver!',
+                cancelButtonText: 'Não'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    event.target.submit()
+                }
+            })
+        })
+    })
+</script>

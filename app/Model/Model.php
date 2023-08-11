@@ -111,7 +111,7 @@ class Model
             $class->set($attributes);
         }
 
-        return $class;
+        return $reflect->newInstance($attributes);
     }
 
     public function create()
@@ -127,6 +127,8 @@ class Model
 
         $values = [];
         $fields = [];
+
+        // var_dump($this->model_hiden);die;
 
         foreach ($attributes as $key => $attribute) {
             if ($key != 'id' && $this->{$key} != null) {
@@ -209,6 +211,47 @@ class Model
             $connection = Database::connect();
 
             $sql = "DELETE FROM `$this->table` WHERE `id`= $this->id;";
+
+            $result = mysqli_query($connection, $sql);
+
+            if ($result) {
+                return true;
+            }
+
+            Database::close($connection);
+        } catch (\Exception $exception) {
+            echo $exception->getMessage();
+            return $exception->getMessage();
+        }
+    }
+
+    public function deleteWhere($where = [])
+    {
+        try {
+
+            $reflect = new ReflectionClass($this->className);
+            $class = $reflect->newInstanceWithoutConstructor();
+
+            $found = $class->get($where);
+
+            if (count($found) == 0) {
+                throw new Exception('Item não localizado');
+            }
+
+            $connection = Database::connect();
+
+            $sql = "DELETE FROM `$this->table` ";
+
+            if (isset($where) && count($where) > 0) {
+                $sql .= " WHERE ";
+                foreach ($where['where'] as $key => $where) {
+                    $where = explode(',', $where);
+                    if ($key > 0) {
+                        $sql .= " AND ";
+                    }
+                    $sql .= "$where[0] $where[1] '$where[2]'";
+                }
+            }
 
             $result = mysqli_query($connection, $sql);
 

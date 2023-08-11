@@ -71,6 +71,9 @@
                         case 'order':
                             require 'order.php';
                             break;
+                        case 'order_edit':
+                            require 'order_edit.php';
+                            break;
                         case 'order_add':
                             require 'order_add.php';
                             break;
