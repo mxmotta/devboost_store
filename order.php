@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
                 <?php foreach ($orders as $order) : ?>
                     <tr>
                         <td class="text-left"><?= $order->id ?></td>
-                        <td class="text-left"><?= $order->date ? Carbon::parse($order->date)->format('d/m/Y') : '' ?></td>
+                        <td class="text-left"><?= $order->date ? Carbon::parse($order->date)->format('d/m/Y H:i') : '' ?></td>
                         <td class="text-left"><?= $order->customer->name ?></td>
                         <td class="text-right"><span class="badge <?= ($order->status ? 'badge-success' : 'badge-danger') ?>"><?= ($order->status ? 'Ativo' : 'Inativo') ?></span></td>
                         <td class="text-right">
