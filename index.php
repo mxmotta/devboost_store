@@ -1,4 +1,18 @@
-<?php require "vendor/autoload.php"; ?>
+<?php
+require "vendor/autoload.php";
+
+use App\Model\User;
+
+session_start();
+
+if (!isset($_SESSION['user'])) {
+    echo "<script>window.location.href='/login.php'</script>";
+}
+
+$user = new User();
+$auth_user = $user->find($_SESSION['user']);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,6 +31,9 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js" integrity="sha512-Rdk63VC+1UYzGSgd3u2iadi0joUrcwX0IWp2rTh6KXFoAmgOjRS99Vynz1lJPT8dLjvo6JZOqpAHJyfCEZ5KoA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
 
 <body>
@@ -31,12 +48,17 @@
                     <li><a href="/?page=order"><i class="fa-solid fa-pen-to-square"></i>Pedidos</a></li>
                     <li><a href="/?page=customer"><i class="fa-solid fa-user-group"></i>Clientes</a></li>
                     <li><a href="/?page=product"><i class="fa-solid fa-boxes-stacked"></i>Produtos</a></li>
+                    <li><a href="/?page=user"><i class="fa-solid fa-user"></i>Users</a></li>
+                    <li><a id="logout" href="#"><i class="fa-solid fa-right-from-bracket"></i>Sair</a></li>
+                    <form id="logoutForm" action="index.php" method="post">
+                        <input type="hidden" name="logout" value="1">
+                    </form>
                 </ul>
             </nav>
         </div>
         <div class="w-full">
             <div id="topbar" class="flex">
-                <div id="user-menu"></div>
+                <div id="user-menu"><?= $auth_user->name ?> <br /> <?= $auth_user->login ?></div>
                 <div id="title">
                     <span class="font-bold">Home</span>
                 </div>
@@ -77,6 +99,15 @@
                         case 'order_add':
                             require 'order_add.php';
                             break;
+                        case 'user':
+                            require 'user.php';
+                            break;
+                        case 'user_add':
+                            require 'user_add.php';
+                            break;
+                        case 'user_edit':
+                            require 'user_edit.php';
+                            break;
 
                         default:
                             echo "<h1>Erro 404, página não encontrada</h1>";
@@ -89,6 +120,23 @@
     </div>
 
     <script src="assets/js/script-jquery.js"></script>
+
+    <script>
+        $('#logout').on('click', (e) => {
+            e.preventDefault()
+
+            $('#logoutForm').submit()
+        })
+    </script>
 </body>
 
 </html>
+
+
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout']) && $_POST['logout']) {
+    unset($_SESSION['user']);
+    echo "<script>window.location.href='/login.php'</script>";
+}
+
+?>
