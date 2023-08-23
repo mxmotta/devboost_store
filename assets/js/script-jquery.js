@@ -33,7 +33,10 @@ const getStates = async () => {
                 }
             })
         })
-        .catch(() => console.log('Erro ao executar função'))
+        .catch((err) => {
+            console.log('Erro ao executar função')
+            console.log(err)
+        })
         .finally(() => {
             $('#loading_states').css('display', 'none')
         })
