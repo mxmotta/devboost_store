@@ -1,6 +1,6 @@
 "use strict";
 
-const IBGE_URL = "http://devboost_store.local/api.php?page="
+const IBGE_URL = window.location.protocol + '//' + window.location.host +  "/api.php?page="
 
 const api = async (url, params = {}, method = 'GET') => {
     return await $.ajax({
